@@ -94,7 +94,12 @@ export class SuiSearch<T> implements AfterViewInit, OnDestroy {
     }
 
     public get query():string {
-        return this.searchService.query;
+        if(this._inputValue){
+            return this._inputValue;
+        }
+        else{
+            return this.searchService.query;
+        }    
     }
 
     public set query(query:string) {
@@ -103,6 +108,14 @@ export class SuiSearch<T> implements AfterViewInit, OnDestroy {
         this.searchService.updateQueryDelayed(query, () =>
             // Set the results open state depending on whether a query has been entered.
             this.dropdownService.setOpenState(this.searchService.query.length > 0));
+    }
+    
+    private _inputValue = false;
+    @Input()
+    public set inputValue(value:string | undefined){
+        if (value != undefined){
+            this._inputValue = value;
+        }
     }
 
     @Input()
